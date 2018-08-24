@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>el和data的作用</title>
+    <script src="../../vue.js"></script>
+</head>
+
+<body>
+    <div id="app">{{content}}</div>
+    <!-- 如果我这里也加上一个同样的div，也是content内容但是在页面中却不能进行渲染 -->
+    <!-- 这是因为，vue实例只接管了id为app里面的内容，而没有接管该dom之外的内容。 -->
+    <div>{{content}}</div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                content: 'hello world'
+            }
+        })
+        // 数据改变，页面就是跟着变化
+        /** 原理：数据变动，在DOM上有个监听，监听数据变动之后，DOM进行从新渲染。
+            let a = {};
+            Object.defineProperty(a, 'name', {
+                set: function () { },
+                get: function () { }
+            });*/
+
+        setTimeout(() => {
+            app.$data.content = 'bye world';
+        }, 2000);
+    </script>
+</body>
+
+</html>
