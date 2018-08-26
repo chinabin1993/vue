@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父传子</title>
+    <script src="../../vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="inputValue">
+        <button @click="handleSubmit">提交</button>
+        <!-- 这里绑定一个index值传给子组件，子组件把这个值在发射出来 -->
+        <todo-list  v-for="(item, $index) in list" 
+                    :content="item" 
+                    :index="$index"
+                    @delete="handleDelete">
+        </todo-list>
+    </div>
+    <script>
+        var TodoList = {
+            props: ['content','index'],
+            template: `<li @click="handleDelete">{{content}}</li>`,
+            methods: {
+                handleDelete() {
+                    this.$emit('delete', this.index);
+                }
+            }
+        }
+        new Vue({
+            el: '#app',
+            data: {
+                inputValue: '',
+                list: []
+            },
+            methods: {
+                handleSubmit() {
+                    this.list.push(this.inputValue);
+                    this.inputValue = '';
+                },
+                handleDelete(index) {
+                    this.list.splice(index, 1);
+                }
+            },
+            components: {
+                TodoList: TodoList
+            }
+        })
+    </script>
+</body>
+
+</html>
