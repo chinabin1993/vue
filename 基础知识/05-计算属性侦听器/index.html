@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>计算属性、方法、侦听器</title>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app">{{fullName}} {{age}}</div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                firstName: 'Wong',
+                lastName: 'Bin',
+                fullName:"",
+                age: 25
+            },
+            // 计算属性
+            /**
+             * 计算属性有缓存的作用，当firstName和lastName没有改变的情况下，其他数据做了改变，
+             * dom会重新渲染，但是不会再进行计算，只有当计算属性所依赖的属性发生了变化，会重新计算。
+             
+            computed: {
+                fullName() {
+                    console.log('计算了一次');
+                    return this.firstName + ' ' + this.lastName;
+                }
+            },*/
+            /**
+             * 方法也可以实现上面的功能
+             * 但是方法没有缓存，每次其他数据变动，重新渲染dom时，会重新计算一次
+             
+            methods: {
+                fullName(){
+                    console.log('计算了一次');
+                    return this.firstName + ' ' + this.lastName;
+                }
+            }*/
+            watch: {
+                firstName(){
+                    console.log('计算了一次');
+                    this.fullName = this.firstName + ' ' + this.lastName;
+                },
+                lastName(){
+                    this.fullName = this.firstName + ' ' + this.lastName;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
