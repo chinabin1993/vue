@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue实例声明周期函数</title>
+    <script src="./vue.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script>
+        // 生命周期函数就是vue在某一时间点自动执行的函数
+        var vm = new Vue({
+            el: '#app',
+            template: `<div>{{test}}</div>`,
+            data: {
+                test: 'hello world'
+            },
+            beforeCreate() {
+                // 当前的el和data都是undefined
+                console.log('beforeCreate');
+                console.log(this.$el,this.$data);
+            },
+            created() {
+                // 当前挂载的el为undefined但是绑定的数据已经拿到
+                console.log('created');
+                console.log(this.$el, this.$data);
+            },
+            beforeMount() {
+                // 当前已经拿到app标签，但是里面还没有内容
+                console.log('beforeMount');
+                console.log(this.$el,this.$data);
+            },
+            mounted() {
+                // 页面渲染完成，template里面的内容已经挂载到了app里
+                console.log('mounted');
+                console.log(this.$el,this.$data);
+            },
+            beforeDestroy() {
+                console.log('beforeDestroy');
+            },
+            destroyed() {
+                console.log('destroyed');
+            },
+            beforeUpdate() {
+                console.log('beforeUpdate');
+            },
+            updated() {
+                console.log('updated');
+            }
+        })
+    </script>
+</body>
+
+</html>
