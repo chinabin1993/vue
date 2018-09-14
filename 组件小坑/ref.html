@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>refs</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <counter 
+        	ref="one" 
+        	@change="handlerCountAdd"
+        >
+        </counter>
+        <counter 
+        	ref="two" 
+        	@change="handlerCountAdd"
+        >
+        </counter>
+        <div>{{total}}</div>
+    </div>
+    <script>
+    Vue.component('counter', {
+        template: `<div @click='handlerNmuberClick'>
+					{{number}}
+				   </div>`,
+        data() {
+            return {
+                number: 0
+            }
+        },
+        methods: {
+            handlerNmuberClick() {
+                this.number++;
+                this.$emit('change', this.number);
+            }
+        }
+    })
+    let vm = new Vue({
+        el: '#root',
+        data: {
+            total: 0
+        },
+        methods: {
+            handlerCountAdd(val) {
+            	this.total = this.$refs.one.number + this.$refs.two.number;
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>
