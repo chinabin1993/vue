@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>作用域插槽</title>
+</head>
+<body>
+    <!-- 
+        场景： 当有循环或者其他dom元素，知道值，但是dom如何排版是子组件里面的dom元素决定的
+        在这种情况下，可能会使用到作用域插槽
+        思路： 必须在slot中绑定值，在template中使用slot-scope获取值
+     -->
+    <div id="root">
+        <child>
+            <template slot-scope='prop'>
+                {{prop.list}}
+            </template>
+        </child>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        Vue.component('child', {
+            data(){
+                return {
+                    list: [1,2,3,4,5]
+                }
+            },
+            template: `<div>
+                    <slot v-for='item in list' :list='item'></slot>
+                </div>`
+        })
+        let vm = new Vue({
+            el: '#root'
+        })
+    </script>
+</body>
+</html>

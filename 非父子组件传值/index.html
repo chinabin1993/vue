@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>非父子组件传值(Bus/订阅分发模式)</title>
+    <script src="../vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <child name='Wang'></child>
+        <child name='Bin'></child>
+    </div>
+    <script>
+        Vue.prototype.bus = new Vue();
+        Vue.component('child', {
+            props:{
+                name: String
+            },
+            data(){
+                return {
+                    currentName: this.name
+                }
+            },
+            template: `<div @click='childClick'>{{currentName}}</div>`,
+            methods: {
+                childClick() {
+                    this.bus.$emit('change', this.currentName);
+                }
+            },
+            mounted () {
+                let that = this;
+                this.bus.$on('change',function(val){
+                    console.log(val);
+                    that.currentName = val;
+                })
+            }
+        })
+        let vm = new Vue({
+            el: '#root',
+            data: {
+
+            }
+        })
+    </script>
+</body>
+</html>

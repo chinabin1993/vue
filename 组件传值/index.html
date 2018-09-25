@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>传值</title>
+    <script src="../vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!-- 加上：符就证明是一个js表达式，传入的count是number类型 -->
+        <counter :count="1" @inc="handleIncrease"></counter>
+        <counter :count="0" @inc="handleIncrease"></counter>
+        <div>总值为：{{total}}</div>
+    </div>
+    <script>
+    var counter = {
+        props: ['count'],
+        template: `<div @click="handleClick">
+				{{number}}
+			</div>`,
+        data() {
+            return {
+                number: this.count
+            }
+        },
+        methods: {
+            /**
+             * [handleClick 子传父]
+             * 组件传值是单项数据流！造成了只能父组件可以修改子组件的内容，
+             * 但是不能使用子组件修改父组件的内容
+             * 原因是怕传入的值是引用类型的情况下出现问题
+             * @return {[type]} [description]
+             */
+            handleClick() {
+                this.number++;
+                this.$emit('inc', 1);
+            }
+        }
+    }
+    let vm = new Vue({
+        el: '#root',
+        data: {
+            total: 1
+        },
+        methods: {
+            handleChange(val) {
+                this.number++
+            },
+            handleIncrease(val){
+            	this.total+=val;
+            }
+        },
+        /** @type {Object} 可以简写 */
+        components: {
+            counter
+        }
+    })
+    </script>
+</body>
+
+</html>
