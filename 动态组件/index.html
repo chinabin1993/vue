@@ -5,24 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>动态组件</title>
+    <script src="../vue.js"></script>
 </head>
 <body>
     <div id="root">
-
+        <component :is='show'></component>
+        <!-- <child-one v-if='show === "child-one"'></child-one>
+        <child-two v-else></child-two> -->
+        <button @click="handleChangeComponent">change</button>
     </div>
     <script>
+        // v-once 可以大大提升组件切换的性能
+        // 场景： 频繁切换组件的情况下，使用v-once会自动缓存
         Vue.component('child-one',{
-            template: `<div>
+            template: `<div v-once>
                 child-one
                 </div>`
         })
         Vue.component('child-two',{
-            template: `<div>
+            template: `<div v-once>
                 child-two
                 </div>`
         })
         let vm = new Vue({
-            el: '#root'
+            el: '#root',
+            data: {
+                show: 'child-one'
+            },
+            methods: {
+                handleChangeComponent() {
+                    this.show = this.show === 'child-one' ?
+                        'child-two' :
+                        'child-one';
+                }
+            }
         })
     </script>
 </body>
